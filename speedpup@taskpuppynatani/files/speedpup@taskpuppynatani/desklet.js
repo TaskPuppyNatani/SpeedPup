@@ -17,7 +17,6 @@ const Cairo = imports.cairo;
 const ByteArray = imports.byteArray;
 
 const REFRESH_SECONDS = 1;
-const GRAPH_HISTORY_SECONDS = 60;
 const GRAPH_WIDTH = 440;
 const GRAPH_HEIGHT = 90;
 
@@ -27,7 +26,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._deskletPath = metadata.path;
 
-        this.speedTestServer = "91";
+        this.speedTestServer = "auto";
 
         this.networkInterfaceMode = "auto";
         this.customNetworkInterface = "";
@@ -838,8 +837,6 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
                             return;
                         }
-
-                        global.log(`SpeedPup LibreSpeed raw JSON: ${stdout}`);
 
                         const data = JSON.parse(stdout);
 
