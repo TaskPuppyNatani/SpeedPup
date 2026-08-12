@@ -87,6 +87,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._lastRxBytes = null;
         this._lastTxBytes = null;
         this._lastSampleTime = null;
+        this._activeNetworkKey = null;
 
         this._downloadHistory = [];
         this._uploadHistory = [];
@@ -456,6 +457,21 @@ class SpeedPupDesklet extends Desklet.Desklet {
             }
         }
 
+        let activeNetworkKey;
+
+        if (targetInterface !== null) {
+            activeNetworkKey = `interface:${targetInterface}`;
+        } else if (this.networkInterfaceMode === "all") {
+            activeNetworkKey = "all";
+        } else {
+            activeNetworkKey = `${this.networkInterfaceMode}:fallback`;
+        }
+
+        if (this._activeNetworkKey !== activeNetworkKey) {
+            this._activeNetworkKey = activeNetworkKey;
+            this._resetNetworkSampling();
+        }
+
         for (let i = 2; i < lines.length; i++) {
             const line = lines[i].trim();
 
@@ -502,6 +518,31 @@ class SpeedPupDesklet extends Desklet.Desklet {
             rx: totalRx,
             tx: totalTx
         };
+    }
+
+    _resetNetworkSampling() {
+        this._lastRxBytes = null;
+        this._lastTxBytes = null;
+        this._lastSampleTime = null;
+
+        this._downloadHistory = [];
+        this._uploadHistory = [];
+
+        if (this._downloadLabel) {
+            this._downloadLabel.set_text(
+                "↓ Download: measuring..."
+            );
+        }
+
+        if (this._uploadLabel) {
+            this._uploadLabel.set_text(
+                "↑ Upload: measuring..."
+            );
+        }
+
+        if (this._networkGraph) {
+            this._networkGraph.queue_repaint();
+        }
     }
 
     _updateSpeeds(rxBytes, txBytes) {
