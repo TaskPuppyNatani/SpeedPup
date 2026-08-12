@@ -167,10 +167,10 @@ class NetworkInterfaceChooser(SettingsWidget):
                     default_interface
                 )
 
-                auto_label = _("Auto (%s — %s)") % (
-                    kind,
-                    default_interface
-                )
+                auto_label = _("Auto (%(kind)s — %(interface)s)") % {
+                    "kind": kind,
+                    "interface": default_interface
+                }
 
             self.combo.append(
                 "auto",
@@ -184,10 +184,10 @@ class NetworkInterfaceChooser(SettingsWidget):
 
                 self.combo.append(
                     item_id,
-                    _("%s — %s") % (
-                        _(kind),
-                        interface
-                    )
+                    _("%(kind)s — %(interface)s") % {
+                        "kind": kind,
+                        "interface": interface
+                    }
                 )
 
                 self._available_ids.add(item_id)
@@ -223,7 +223,7 @@ class NetworkInterfaceChooser(SettingsWidget):
                 if active_id not in self._available_ids:
                     self.combo.append(
                         active_id,
-                        _("Unavailable — %s") % custom
+                        _("Unavailable — %(interface)s") % {"interface": custom}
                     )
 
                     self._available_ids.add(
