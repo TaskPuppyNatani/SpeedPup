@@ -79,8 +79,35 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._networkFile = Gio.file_new_for_path("/proc/net/dev");
 
+        const stateRoot =
+            typeof GLib.get_user_state_dir === "function"
+                ? GLib.get_user_state_dir()
+                : GLib.build_filenamev([
+                    GLib.get_home_dir(),
+                    ".local",
+                    "state"
+                ]);
+
+        this._stateDirectory = GLib.build_filenamev([
+            stateRoot,
+            "speedpup"
+        ]);
+
+        GLib.mkdir_with_parents(
+            this._stateDirectory,
+            0o700
+        );
+
+        this._lastResultFile = Gio.file_new_for_path(
+            GLib.build_filenamev([
+                this._stateDirectory,
+                "last-speed-test.json"
+            ])
+        );
+
         this._buildUi();
         this._applyGraphSettings();
+        this._loadLastSpeedTest();
         this._readNetworkStats();
 
         this._timerId = GLib.timeout_add_seconds(
@@ -688,7 +715,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         }
     }
 
-    _displaySpeedTestResults(data) {
+    _displaySpeedTestResults(data, saveResult = true) {
         const result = Array.isArray(data) ? data[0] : data;
 
         if (!result) {
@@ -730,6 +757,93 @@ class SpeedPupDesklet extends Desklet.Desklet {
         }
 
         this._serverLabel.set_text(serverName);
+
+        if (saveResult) {
+            const timestamp =
+                typeof result.timestamp === "string"
+                    ? result.timestamp
+                    : new Date().toISOString();
+
+            this._saveLastSpeedTest({
+                timestamp: timestamp,
+                download: downloadMbps,
+                upload: uploadMbps,
+                ping: pingMs,
+                server: {
+                    name: serverName
+                }
+            });
+        }
+    }
+
+    _loadLastSpeedTest() {
+        if (!this._lastResultFile) {
+            return;
+        }
+
+        this._lastResultFile.load_contents_async(
+            null,
+            (file, result) => {
+                if (this._removed) {
+                    return;
+                }
+
+                try {
+                    const [success, contents] =
+                        file.load_contents_finish(result);
+
+                    if (!success) {
+                        return;
+                    }
+
+                    const text =
+                        ByteArray.toString(contents).trim();
+
+                    if (!text) {
+                        return;
+                    }
+
+                    const savedResult = JSON.parse(text);
+
+                    this._displaySpeedTestResults(
+                        savedResult,
+                        false
+                    );
+                } catch (error) {
+                    // First run or missing/corrupt state file:
+                    // simply leave the display at "--".
+                }
+            }
+        );
+    }
+
+    _saveLastSpeedTest(result) {
+        if (!this._lastResultFile || this._removed) {
+            return;
+        }
+
+        const contents = ByteArray.fromString(
+            JSON.stringify(result, null, 2)
+        );
+
+        this._lastResultFile.replace_contents_async(
+            contents,
+            null,
+            false,
+            Gio.FileCreateFlags.REPLACE_DESTINATION,
+            null,
+            (file, asyncResult) => {
+                try {
+                    file.replace_contents_finish(asyncResult);
+                } catch (error) {
+                    if (!this._removed) {
+                        global.logError(
+                            `SpeedPup could not save last result: ${error}`
+                        );
+                    }
+                }
+            }
+        );
     }
 
     _setTestingState(testing) {
@@ -832,6 +946,8 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._speedTestProcess = null;
         this._networkFile = null;
+        this._lastResultFile = null;
+        this._stateDirectory = null;
 
         if (this.settings) {
             this.settings.finalize();
