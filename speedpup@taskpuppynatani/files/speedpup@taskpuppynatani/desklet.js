@@ -946,15 +946,21 @@ class SpeedPupDesklet extends Desklet.Desklet {
         }
 
         this._testDownloadLabel.set_text(
-            `↓ Download: ${downloadMbps.toFixed(2)} Mbps`
+            _("↓ Download: %s Mbps").format(
+                downloadMbps.toFixed(2)
+            )
         );
 
         this._testUploadLabel.set_text(
-            `↑ Upload: ${uploadMbps.toFixed(2)} Mbps`
+            _("↑ Upload: %s Mbps").format(
+                uploadMbps.toFixed(2)
+            )
         );
 
         this._pingLabel.set_text(
-            `Ping: ${pingMs.toFixed(1)} ms`
+            _("Ping: %s ms").format(
+                pingMs.toFixed(1)
+            )
         );
 
         let serverName = "--";
