@@ -1,11 +1,18 @@
 .speedpup-container {
-    padding: 16px;
+    padding: 18px;
     min-width: 300px;
-    spacing: 8px;
+    spacing: 7px;
+
     border-radius: 12px;
-    background-color: rgba(20, 20, 24, 0.88);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    background-color: rgba(20, 20, 24, 0.92);
     color: #f5f5f5;
 }
+
+/* ---------------------------------------------------------
+ * Branding
+ * --------------------------------------------------------- */
 
 .speedpup-title {
     font-size: 18px;
@@ -13,16 +20,26 @@
     color: #8AE234;
 }
 
+/* ---------------------------------------------------------
+ * Section headings
+ * --------------------------------------------------------- */
+
 .speedpup-section-label {
-    padding-top: 4px;
+    padding-top: 6px;
+
     font-size: 12px;
     font-weight: bold;
-    color: #bbbbbb;
+
+    color: #c8c8cf;
 }
 
 .speedpup-test-section {
     padding-top: 12px;
 }
+
+/* ---------------------------------------------------------
+ * Live traffic + results
+ * --------------------------------------------------------- */
 
 .speedpup-speed {
     font-size: 16px;
@@ -32,22 +49,52 @@
     font-size: 15px;
 }
 
-.speedpup-button {
-    margin-top: 8px;
-    padding: 8px 14px;
-    border-radius: 8px;
-    background-color: rgba(80, 80, 90, 0.8);
-    color: #ffffff;
-    font-weight: bold;
+.speedpup-download {
+    color: #8AE234;
 }
 
-.speedpup-button:hover {
-    background-color: rgba(105, 105, 115, 0.9);
+.speedpup-upload {
+    color: #B266FF;
 }
 
+/* ---------------------------------------------------------
+ * Traffic graph
+ * --------------------------------------------------------- */
+
+.speedpup-graph-legend {
+    padding-top: 5px;
+    spacing: 18px;
+}
+
+.speedpup-graph-legend-download {
+    font-size: 11px;
+    color: #8AE234;
+}
+
+.speedpup-graph-legend-upload {
+    font-size: 11px;
+    color: #B266FF;
+}
+
+.speedpup-graph-legend-range {
+    font-size: 11px;
+    color: #a8a8b0;
+}
+
+.speedpup-network-graph {
+    margin-top: 2px;
+    margin-bottom: 6px;
+
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ---------------------------------------------------------
+ * Speed-test results
+ * --------------------------------------------------------- */
 
 .speedpup-test-results {
-    spacing: 24px;
+    spacing: 30px;
 }
 
 .speedpup-test-numbers {
@@ -62,21 +109,34 @@
 .speedpup-server-heading {
     font-size: 12px;
     font-weight: bold;
-    color: #bbbbbb;
+    color: #b9b9c2;
 }
 
 .speedpup-server {
     font-size: 13px;
+    color: #e0e0e5;
 }
 
-.speedpup-graph-legend {
-    padding-top: 4px;
-    font-size: 11px;
-    color: #aaaaaa;
+/* ---------------------------------------------------------
+ * Run Speed Test button
+ * --------------------------------------------------------- */
+
+.speedpup-button {
+    margin-top: 10px;
+    padding: 9px 14px;
+
+    border-radius: 8px;
+    border: 1px solid rgba(138, 226, 52, 0.22);
+
+    background-color: rgba(72, 72, 82, 0.90);
+
+    color: #ffffff;
+    font-weight: bold;
 }
 
-.speedpup-network-graph {
-    margin-top: 2px;
-    margin-bottom: 4px;
-    border-radius: 6px;
+.speedpup-button:hover {
+    border-color: rgba(138, 226, 52, 0.75);
+    background-color: rgba(138, 226, 52, 0.14);
+
+    color: #8AE234;
 }

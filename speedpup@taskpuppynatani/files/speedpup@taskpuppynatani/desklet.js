@@ -27,6 +27,10 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this.speedTestServer = "91";
 
+        this.showGraph = true;
+        this.graphHistorySeconds = 60;
+        this.graphHeight = 90;
+
         this.settings = new Settings.DeskletSettings(
             this,
             metadata.uuid,
@@ -36,6 +40,30 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this.settings.bind(
             "speed-test-server",
             "speedTestServer"
+        );
+
+        this.settings.bindProperty(
+            Settings.BindingDirection.IN,
+            "show-graph",
+            "showGraph",
+            this._onGraphSettingsChanged.bind(this),
+            null
+        );
+
+        this.settings.bindProperty(
+            Settings.BindingDirection.IN,
+            "graph-history-seconds",
+            "graphHistorySeconds",
+            this._onGraphSettingsChanged.bind(this),
+            null
+        );
+
+        this.settings.bindProperty(
+            Settings.BindingDirection.IN,
+            "graph-height",
+            "graphHeight",
+            this._onGraphSettingsChanged.bind(this),
+            null
         );
 
         this._removed = false;
@@ -52,6 +80,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._networkFile = Gio.file_new_for_path("/proc/net/dev");
 
         this._buildUi();
+        this._applyGraphSettings();
         this._readNetworkStats();
 
         this._timerId = GLib.timeout_add_seconds(
@@ -82,25 +111,44 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._downloadLabel = new St.Label({
             text: "↓ Download: measuring...",
-            style_class: "speedpup-speed"
+            style_class: "speedpup-speed speedpup-download"
         });
 
         this._uploadLabel = new St.Label({
             text: "↑ Upload: measuring...",
-            style_class: "speedpup-speed"
+            style_class: "speedpup-speed speedpup-upload"
         });
 
-        this._graphLegend = new St.Label({
-            text: "↓ Download     ↑ Upload     • Last 60 seconds",
+        this._graphLegend = new St.BoxLayout({
+            vertical: false,
             style_class: "speedpup-graph-legend"
         });
+
+        this._graphLegendDownload = new St.Label({
+            text: "↓ Download",
+            style_class: "speedpup-graph-legend-download"
+        });
+
+        this._graphLegendUpload = new St.Label({
+            text: "↑ Upload",
+            style_class: "speedpup-graph-legend-upload"
+        });
+
+        this._graphLegendRange = new St.Label({
+            text: `• Last ${this.graphHistorySeconds} seconds`,
+            style_class: "speedpup-graph-legend-range"
+        });
+
+        this._graphLegend.add_child(this._graphLegendDownload);
+        this._graphLegend.add_child(this._graphLegendUpload);
+        this._graphLegend.add_child(this._graphLegendRange);
 
         this._networkGraph = new St.DrawingArea({
             style_class: "speedpup-network-graph"
         });
 
         this._networkGraph.width = GRAPH_WIDTH;
-        this._networkGraph.height = GRAPH_HEIGHT;
+        this._networkGraph.height = Number(this.graphHeight) || GRAPH_HEIGHT;
 
         this._graphRepaintSignal = this._networkGraph.connect(
             "repaint",
@@ -114,12 +162,12 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._testDownloadLabel = new St.Label({
             text: "↓ Download: --",
-            style_class: "speedpup-result"
+            style_class: "speedpup-result speedpup-download"
         });
 
         this._testUploadLabel = new St.Label({
             text: "↑ Upload: --",
-            style_class: "speedpup-result"
+            style_class: "speedpup-result speedpup-upload"
         });
 
         this._pingLabel = new St.Label({
@@ -322,11 +370,13 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._downloadHistory.push(downloadBytesPerSecond);
         this._uploadHistory.push(uploadBytesPerSecond);
 
-        if (this._downloadHistory.length > GRAPH_HISTORY_SECONDS) {
+        const historyLimit = this._getGraphHistorySeconds();
+
+        if (this._downloadHistory.length > historyLimit) {
             this._downloadHistory.shift();
         }
 
-        if (this._uploadHistory.length > GRAPH_HISTORY_SECONDS) {
+        if (this._uploadHistory.length > historyLimit) {
             this._uploadHistory.shift();
         }
 
@@ -337,6 +387,69 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._lastRxBytes = rxBytes;
         this._lastTxBytes = txBytes;
         this._lastSampleTime = now;
+    }
+
+    _getGraphHistorySeconds() {
+        const value = Number(this.graphHistorySeconds);
+
+        if (!Number.isFinite(value)) {
+            return 60;
+        }
+
+        return Math.max(15, Math.min(300, Math.round(value)));
+    }
+
+    _getGraphHeight() {
+        const value = Number(this.graphHeight);
+
+        if (!Number.isFinite(value)) {
+            return 90;
+        }
+
+        return Math.max(50, Math.min(200, Math.round(value)));
+    }
+
+    _onGraphSettingsChanged() {
+        if (!this._networkGraph || !this._graphLegend) {
+            return;
+        }
+
+        this._applyGraphSettings();
+    }
+
+    _applyGraphSettings() {
+        if (
+            !this._networkGraph ||
+            !this._graphLegend ||
+            !this._graphLegendRange
+        ) {
+            return;
+        }
+
+        const historySeconds = this._getGraphHistorySeconds();
+        const graphHeight = this._getGraphHeight();
+        const visible = Boolean(this.showGraph);
+
+        this._networkGraph.visible = visible;
+        this._graphLegend.visible = visible;
+
+        this._networkGraph.height = graphHeight;
+
+        this._graphLegendRange.set_text(
+            `• Last ${historySeconds} seconds`
+        );
+
+        if (this._downloadHistory.length > historySeconds) {
+            this._downloadHistory =
+                this._downloadHistory.slice(-historySeconds);
+        }
+
+        if (this._uploadHistory.length > historySeconds) {
+            this._uploadHistory =
+                this._uploadHistory.slice(-historySeconds);
+        }
+
+        this._networkGraph.queue_repaint();
     }
 
     _drawNetworkGraph(area) {
@@ -427,8 +540,10 @@ class SpeedPupDesklet extends Desklet.Desklet {
         cr.setSourceRGBA(red, green, blue, 0.95);
 
         for (let i = 0; i < values.length; i++) {
+            const historySeconds = this._getGraphHistorySeconds();
+
             const x =
-                (i / (GRAPH_HISTORY_SECONDS - 1)) * width;
+                (i / Math.max(1, historySeconds - 1)) * width;
 
             const normalized =
                 Math.min(1, Math.max(0, values[i] / maxValue));
