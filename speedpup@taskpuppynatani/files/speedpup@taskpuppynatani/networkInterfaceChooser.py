@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import os
+import gettext
 
 import gi
 gi.require_version("Gtk", "3.0")
@@ -8,6 +9,21 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from xapp.SettingsWidgets import SettingsWidget
 
+
+UUID = "speedpup@taskpuppynatani"
+LOCALE_DIR = os.path.join(
+    os.path.expanduser("~"),
+    ".local",
+    "share",
+    "locale"
+)
+
+gettext.bindtextdomain(UUID, LOCALE_DIR)
+_ = gettext.translation(
+    UUID,
+    LOCALE_DIR,
+    fallback=True
+).gettext
 
 MODE_KEY = "network-interface-mode"
 INTERFACE_KEY = "custom-network-interface"
@@ -44,9 +60,9 @@ def _interface_kind(interface):
     base = os.path.join("/sys/class/net", interface)
 
     if os.path.isdir(os.path.join(base, "wireless")):
-        return "Wi-Fi"
+        return _("Wi-Fi")
 
-    return "Ethernet"
+    return _("Ethernet")
 
 
 def _physical_interfaces():
@@ -93,7 +109,7 @@ class NetworkInterfaceChooser(SettingsWidget):
         label = Gtk.Label(
             label=info.get(
                 "description",
-                "Network interface"
+                _("Network interface")
             )
         )
 
@@ -144,16 +160,16 @@ class NetworkInterfaceChooser(SettingsWidget):
             interfaces = _physical_interfaces()
             default_interface = _read_default_interface()
 
-            auto_label = "Auto (default route)"
+            auto_label = _("Auto (default route)")
 
             if default_interface:
                 kind = _interface_kind(
                     default_interface
                 )
 
-                auto_label = (
-                    f"Auto ({kind} — "
-                    f"{default_interface})"
+                auto_label = _("Auto (%s — %s)") % (
+                    kind,
+                    default_interface
                 )
 
             self.combo.append(
@@ -168,14 +184,17 @@ class NetworkInterfaceChooser(SettingsWidget):
 
                 self.combo.append(
                     item_id,
-                    f"{kind} — {interface}"
+                    _("%s — %s") % (
+                        _(kind),
+                        interface
+                    )
                 )
 
                 self._available_ids.add(item_id)
 
             self.combo.append(
                 "all",
-                "All interfaces"
+                _("All interfaces")
             )
 
             self._available_ids.add("all")
@@ -204,7 +223,7 @@ class NetworkInterfaceChooser(SettingsWidget):
                 if active_id not in self._available_ids:
                     self.combo.append(
                         active_id,
-                        f"Unavailable — {custom}"
+                        _("Unavailable — %s") % custom
                     )
 
                     self._available_ids.add(
