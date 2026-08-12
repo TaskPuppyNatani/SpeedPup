@@ -1,0 +1,70 @@
+.speedpup-container {
+    padding: 16px;
+    min-width: 300px;
+    spacing: 8px;
+    border-radius: 12px;
+    background-color: rgba(20, 20, 24, 0.88);
+    color: #f5f5f5;
+}
+
+.speedpup-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #8AE234;
+}
+
+.speedpup-section-label {
+    padding-top: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbbbbb;
+}
+
+.speedpup-test-section {
+    padding-top: 12px;
+}
+
+.speedpup-speed {
+    font-size: 16px;
+}
+
+.speedpup-result {
+    font-size: 15px;
+}
+
+.speedpup-button {
+    margin-top: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background-color: rgba(80, 80, 90, 0.8);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.speedpup-button:hover {
+    background-color: rgba(105, 105, 115, 0.9);
+}
+
+
+.speedpup-test-results {
+    spacing: 24px;
+}
+
+.speedpup-test-numbers {
+    spacing: 4px;
+}
+
+.speedpup-server-box {
+    spacing: 4px;
+    min-width: 130px;
+}
+
+.speedpup-server-heading {
+    font-size: 12px;
+    font-weight: bold;
+    color: #bbbbbb;
+}
+
+.speedpup-server {
+    font-size: 13px;
+}

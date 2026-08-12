@@ -1,0 +1,15 @@
+{
+  "speed-test-server": {
+    "type": "combobox",
+    "default": "91",
+    "description": "Speed test server",
+    "options": {
+      "Auto": "auto",
+      "Los Angeles - Sharktech": "91",
+      "Los Angeles - Clouvider": "54",
+      "Las Vegas - Sharktech": "90",
+      "Denver - Sharktech": "92",
+      "Chicago - Sharktech": "93"
+    }
+  }
+}

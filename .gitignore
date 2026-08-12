@@ -1,0 +1,16 @@
+# Editor / IDE
+.vscode/
+.idea/
+
+# OS / file-manager noise
+.DS_Store
+Thumbs.db
+*~
+
+# Logs / temporary files
+*.log
+*.tmp
+*.bak
+
+# Local development copies
+.dev/
