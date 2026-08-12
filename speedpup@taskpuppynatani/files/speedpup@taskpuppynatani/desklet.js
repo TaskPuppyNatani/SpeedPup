@@ -596,11 +596,15 @@ class SpeedPupDesklet extends Desklet.Desklet {
             txDelta / elapsedSeconds;
 
         this._downloadLabel.set_text(
-            `↓ Download: ${this._formatRate(downloadBytesPerSecond)}`
+            _("↓ Download: %s").format(
+                this._formatRate(downloadBytesPerSecond)
+            )
         );
 
         this._uploadLabel.set_text(
-            `↑ Upload: ${this._formatRate(uploadBytesPerSecond)}`
+            _("↑ Upload: %s").format(
+                this._formatRate(uploadBytesPerSecond)
+            )
         );
 
         this._downloadHistory.push(downloadBytesPerSecond);
