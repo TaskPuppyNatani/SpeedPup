@@ -190,7 +190,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         });
 
         this._graphLegendRange = new St.Label({
-            text: `• Last ${this.graphHistorySeconds} seconds`,
+            text: _("• Last %d seconds").format(this.graphHistorySeconds),
             style_class: "speedpup-graph-legend-range"
         });
 
@@ -672,7 +672,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._networkGraph.height = graphHeight;
 
         this._graphLegendRange.set_text(
-            `• Last ${historySeconds} seconds`
+            _("• Last %d seconds").format(historySeconds)
         );
 
         if (this._downloadHistory.length > historySeconds) {
