@@ -68,3 +68,15 @@
 .speedpup-server {
     font-size: 13px;
 }
+
+.speedpup-graph-legend {
+    padding-top: 4px;
+    font-size: 11px;
+    color: #aaaaaa;
+}
+
+.speedpup-network-graph {
+    margin-top: 2px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+}
