@@ -1,6 +1,6 @@
 {
   "network-header": {
-    "type": "header",
+    "type": "section",
     "description": "Network Monitoring"
   },
   "network-interface-picker": {
@@ -18,7 +18,7 @@
     "default": ""
   },
   "speed-test-header": {
-    "type": "header",
+    "type": "section",
     "description": "Internet Speed Test"
   },
   "speed-test-server": {
@@ -35,7 +35,7 @@
     }
   },
   "graph-header": {
-    "type": "header",
+    "type": "section",
     "description": "Live Traffic Graph"
   },
   "show-graph": {
