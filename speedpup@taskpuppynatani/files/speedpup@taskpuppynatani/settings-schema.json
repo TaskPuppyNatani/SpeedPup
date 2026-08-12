@@ -1,9 +1,26 @@
 {
+  "network-header": {
+    "type": "header",
+    "description": "Network Monitoring"
+  },
+  "network-interface-picker": {
+    "type": "custom",
+    "file": "networkInterfaceChooser.py",
+    "widget": "NetworkInterfaceChooser",
+    "description": "Network interface"
+  },
+  "network-interface-mode": {
+    "type": "generic",
+    "default": "auto"
+  },
+  "custom-network-interface": {
+    "type": "generic",
+    "default": ""
+  },
   "speed-test-header": {
     "type": "header",
     "description": "Internet Speed Test"
   },
-
   "speed-test-server": {
     "type": "combobox",
     "default": "91",
@@ -17,18 +34,15 @@
       "Chicago - Sharktech": "93"
     }
   },
-
   "graph-header": {
     "type": "header",
     "description": "Live Traffic Graph"
   },
-
   "show-graph": {
     "type": "checkbox",
     "default": true,
     "description": "Show live traffic graph"
   },
-
   "graph-history-seconds": {
     "type": "spinbutton",
     "default": 60,
@@ -38,7 +52,6 @@
     "units": "seconds",
     "description": "Graph history"
   },
-
   "graph-height": {
     "type": "spinbutton",
     "default": 90,

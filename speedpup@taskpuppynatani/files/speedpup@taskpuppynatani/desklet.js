@@ -27,6 +27,9 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this.speedTestServer = "91";
 
+        this.networkInterfaceMode = "auto";
+        this.customNetworkInterface = "";
+
         this.showGraph = true;
         this.graphHistorySeconds = 60;
         this.graphHeight = 90;
@@ -40,6 +43,16 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this.settings.bind(
             "speed-test-server",
             "speedTestServer"
+        );
+
+        this.settings.bind(
+            "network-interface-mode",
+            "networkInterfaceMode"
+        );
+
+        this.settings.bind(
+            "custom-network-interface",
+            "customNetworkInterface"
         );
 
         this.settings.bindProperty(
@@ -78,6 +91,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._uploadHistory = [];
 
         this._networkFile = Gio.file_new_for_path("/proc/net/dev");
+        this._routeFile = Gio.file_new_for_path("/proc/net/route");
 
         const stateRoot =
             typeof GLib.get_user_state_dir === "function"
@@ -277,41 +291,141 @@ class SpeedPupDesklet extends Desklet.Desklet {
     }
 
     _readNetworkStats() {
-        this._networkFile.load_contents_async(null, (file, result) => {
-            if (this._removed) {
-                return;
-            }
+        if (
+            this.networkInterfaceMode === "auto" &&
+            this._routeFile
+        ) {
+            this._routeFile.load_contents_async(
+                null,
+                (file, result) => {
+                    if (this._removed) {
+                        return;
+                    }
 
-            try {
-                const [success, contents] = file.load_contents_finish(result);
+                    let interfaceName = null;
 
-                if (!success) {
-                    this._showNetworkError("Unable to read network statistics");
-                    return;
+                    try {
+                        const [success, contents] =
+                            file.load_contents_finish(result);
+
+                        if (success) {
+                            interfaceName =
+                                this._parseDefaultRouteInterface(
+                                    ByteArray.toString(contents)
+                                );
+                        }
+                    } catch (error) {
+                        global.logError(
+                            `SpeedPup route read failed: ${error}`
+                        );
+                    }
+
+                    this._readNetworkDeviceStats(interfaceName);
                 }
+            );
 
-                const text = ByteArray.toString(contents);
-                const totals = this._parseNetworkStats(text);
+            return;
+        }
 
-                if (totals === null) {
-                    this._showNetworkError("No network interfaces found");
-                    return;
-                }
-
-                this._updateSpeeds(totals.rx, totals.tx);
-            } catch (error) {
-                global.logError(`SpeedPup network read failed: ${error}`);
-                this._showNetworkError("Network monitor error");
-            }
-        });
+        this._readNetworkDeviceStats(null);
     }
 
-    _parseNetworkStats(text) {
+    _readNetworkDeviceStats(autoInterface) {
+        this._networkFile.load_contents_async(
+            null,
+            (file, result) => {
+                if (this._removed) {
+                    return;
+                }
+
+                try {
+                    const [success, contents] =
+                        file.load_contents_finish(result);
+
+                    if (!success) {
+                        this._showNetworkError(
+                            "Unable to read network statistics"
+                        );
+                        return;
+                    }
+
+                    const text = ByteArray.toString(contents);
+
+                    const totals = this._parseNetworkStats(
+                        text,
+                        autoInterface
+                    );
+
+                    if (totals === null) {
+                        this._showNetworkError(
+                            "No matching network interface"
+                        );
+                        return;
+                    }
+
+                    this._updateSpeeds(
+                        totals.rx,
+                        totals.tx
+                    );
+                } catch (error) {
+                    global.logError(
+                        `SpeedPup network read failed: ${error}`
+                    );
+
+                    this._showNetworkError(
+                        "Network monitor error"
+                    );
+                }
+            }
+        );
+    }
+
+    _parseDefaultRouteInterface(text) {
+        const lines = text.split("\n");
+
+        for (let i = 1; i < lines.length; i++) {
+            const parts = lines[i].trim().split(/\s+/);
+
+            if (parts.length < 4) {
+                continue;
+            }
+
+            const interfaceName = parts[0];
+            const destination = parts[1];
+            const flags = parseInt(parts[3], 16);
+
+            if (
+                destination === "00000000" &&
+                Number.isFinite(flags) &&
+                (flags & 0x1) !== 0
+            ) {
+                return interfaceName;
+            }
+        }
+
+        return null;
+    }
+
+    _parseNetworkStats(text, autoInterface = null) {
         const lines = text.split("\n");
 
         let totalRx = 0;
         let totalTx = 0;
         let foundInterface = false;
+
+        let targetInterface = null;
+
+        if (this.networkInterfaceMode === "auto") {
+            targetInterface = autoInterface;
+        } else if (this.networkInterfaceMode === "custom") {
+            const custom = String(
+                this.customNetworkInterface || ""
+            ).trim();
+
+            if (custom !== "") {
+                targetInterface = custom;
+            }
+        }
 
         for (let i = 2; i < lines.length; i++) {
             const line = lines[i].trim();
@@ -329,6 +443,13 @@ class SpeedPupDesklet extends Desklet.Desklet {
             const interfaceName = parts[0];
 
             if (interfaceName === "lo") {
+                continue;
+            }
+
+            if (
+                targetInterface !== null &&
+                interfaceName !== targetInterface
+            ) {
                 continue;
             }
 
@@ -987,6 +1108,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._speedTestProcess = null;
         this._networkFile = null;
+        this._routeFile = null;
         this._lastResultFile = null;
         this._stateDirectory = null;
 
