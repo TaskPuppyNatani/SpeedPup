@@ -15,6 +15,18 @@ const Gio = imports.gi.Gio;
 const GLib = imports.gi.GLib;
 const Cairo = imports.cairo;
 const ByteArray = imports.byteArray;
+const Gettext = imports.gettext;
+
+const UUID = "speedpup@taskpuppynatani";
+
+Gettext.bindtextdomain(
+    UUID,
+    GLib.get_home_dir() + "/.local/share/locale"
+);
+
+function _(text) {
+    return Gettext.dgettext(UUID, text);
+}
 
 const REFRESH_SECONDS = 1;
 const GRAPH_WIDTH = 440;
