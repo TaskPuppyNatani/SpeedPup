@@ -160,17 +160,17 @@ class SpeedPupDesklet extends Desklet.Desklet {
         });
 
         this._liveSection = new St.Label({
-            text: "Live Network Traffic",
+            text: _("Live Network Traffic"),
             style_class: "speedpup-section-label"
         });
 
         this._downloadLabel = new St.Label({
-            text: "↓ Download: measuring...",
+            text: _("↓ Download: measuring..."),
             style_class: "speedpup-speed speedpup-download"
         });
 
         this._uploadLabel = new St.Label({
-            text: "↑ Upload: measuring...",
+            text: _("↑ Upload: measuring..."),
             style_class: "speedpup-speed speedpup-upload"
         });
 
@@ -180,12 +180,12 @@ class SpeedPupDesklet extends Desklet.Desklet {
         });
 
         this._graphLegendDownload = new St.Label({
-            text: "↓ Download",
+            text: _("↓ Download"),
             style_class: "speedpup-graph-legend-download"
         });
 
         this._graphLegendUpload = new St.Label({
-            text: "↑ Upload",
+            text: _("↑ Upload"),
             style_class: "speedpup-graph-legend-upload"
         });
 
@@ -242,22 +242,22 @@ class SpeedPupDesklet extends Desklet.Desklet {
         );
 
         this._testSection = new St.Label({
-            text: "Internet Speed Test",
+            text: _("Internet Speed Test"),
             style_class: "speedpup-section-label speedpup-test-section"
         });
 
         this._testDownloadLabel = new St.Label({
-            text: "↓ Download: --",
+            text: _("↓ Download: --"),
             style_class: "speedpup-result speedpup-download"
         });
 
         this._testUploadLabel = new St.Label({
-            text: "↑ Upload: --",
+            text: _("↑ Upload: --"),
             style_class: "speedpup-result speedpup-upload"
         });
 
         this._pingLabel = new St.Label({
-            text: "Ping: --",
+            text: _("Ping: --"),
             style_class: "speedpup-result"
         });
 
@@ -278,7 +278,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         });
 
         this._serverHeading = new St.Label({
-            text: "Test Server",
+            text: _("Test Server"),
             style_class: "speedpup-server-heading"
         });
 
@@ -288,7 +288,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         });
 
         this._lastTestedLabel = new St.Label({
-            text: "Last tested: --",
+            text: _("Last tested: --"),
             style_class: "speedpup-last-tested"
         });
 
@@ -304,7 +304,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._testResultsBox.add_child(this._serverBox);
 
         this._speedTestButtonLabel = new St.Label({
-            text: "▶ Run Speed Test"
+            text: _("▶ Run Speed Test")
         });
 
         this._speedTestButton = new St.Button({
@@ -542,13 +542,13 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         if (this._downloadLabel) {
             this._downloadLabel.set_text(
-                "↓ Download: measuring..."
+                _("↓ Download: measuring...")
             );
         }
 
         if (this._uploadLabel) {
             this._uploadLabel.set_text(
-                "↑ Upload: measuring..."
+                _("↑ Upload: measuring...")
             );
         }
 
