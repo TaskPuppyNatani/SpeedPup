@@ -1,27 +1,27 @@
 # 🐾 SpeedPup by TaskPuppyKreations 🐾
 
-SpeedPup by TaskPuppyKreations is a Linux Cinnamon desklet for monitoring live network throughput
-and running on-demand internet speed tests from the desktop.
+SpeedPup is a Cinnamon desklet for monitoring live network traffic and running on-demand internet speed tests.
 
-## Project status
+## Features
 
-Early development.
+- Live download and upload throughput
+- Live traffic graph
+- Automatic active-interface detection
+- Manual Ethernet and Wi-Fi interface selection
+- Configurable graph history and height
+- On-demand internet speed tests
+- Download, upload, and ping results
+- Speed-test server selection
+- Persistent last speed-test result and timestamp
 
-## Cinnamon UUID
+## Speed testing
 
-`speedpup@taskpuppynatani`
+SpeedPup currently uses `librespeed-cli` for internet speed tests.
 
-## Repository layout
-
-The `speedpup@taskpuppynatani/` directory mirrors the layout expected by the
-Linux Mint Cinnamon Spices desklet repository.
-
-Development-only notes and helper scripts live outside that directory so the
-Cinnamon submission stays clean.
+Distribution compatibility for this dependency is still being finalized before submission to Cinnamon Spices.
 
 ## License
 
-SpeedPup source code is licensed under GPL-3.0-or-later.
+SpeedPup source code is licensed under GPL-3.0-or-later. See `LICENSE`.
 
-The SpeedPup name, logos, artwork, and official-project identity are covered
-separately by `TRADEMARKS.md`.
+The SpeedPup name, logo, artwork, and other branding are covered separately by `TRADEMARKS.md`.
