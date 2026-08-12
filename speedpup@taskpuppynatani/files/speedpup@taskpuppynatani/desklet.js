@@ -228,12 +228,18 @@ class SpeedPupDesklet extends Desklet.Desklet {
             style_class: "speedpup-server"
         });
 
+        this._lastTestedLabel = new St.Label({
+            text: "Last tested: --",
+            style_class: "speedpup-last-tested"
+        });
+
         this._testNumbersBox.add_child(this._testDownloadLabel);
         this._testNumbersBox.add_child(this._testUploadLabel);
         this._testNumbersBox.add_child(this._pingLabel);
 
         this._serverBox.add_child(this._serverHeading);
         this._serverBox.add_child(this._serverLabel);
+        this._serverBox.add_child(this._lastTestedLabel);
 
         this._testResultsBox.add_child(this._testNumbersBox);
         this._testResultsBox.add_child(this._serverBox);
@@ -758,6 +764,10 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         this._serverLabel.set_text(serverName);
 
+        this._lastTestedLabel.set_text(
+            this._formatLastTested(result.timestamp)
+        );
+
         if (saveResult) {
             const timestamp =
                 typeof result.timestamp === "string"
@@ -844,6 +854,37 @@ class SpeedPupDesklet extends Desklet.Desklet {
                 }
             }
         );
+    }
+
+    _formatLastTested(timestamp) {
+        if (typeof timestamp !== "string" || timestamp.trim() === "") {
+            return "Last tested: --";
+        }
+
+        // LibreSpeed may provide nanosecond precision. Trim it to
+        // milliseconds so JavaScript Date parsing stays predictable.
+        const parseableTimestamp = timestamp.replace(
+            /(\.\d{3})\d+([+-]\d{2}:\d{2}|Z)$/,
+            "$1$2"
+        );
+
+        const date = new Date(parseableTimestamp);
+
+        if (Number.isNaN(date.getTime())) {
+            return "Last tested: --";
+        }
+
+        let hours = date.getHours();
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const suffix = hours >= 12 ? "PM" : "AM";
+
+        hours %= 12;
+
+        if (hours === 0) {
+            hours = 12;
+        }
+
+        return `Last tested: ${hours}:${minutes} ${suffix}`;
     }
 
     _setTestingState(testing) {
