@@ -1069,7 +1069,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
     _formatLastTested(timestamp) {
         if (typeof timestamp !== "string" || timestamp.trim() === "") {
-            return "Last tested: --";
+            return _("Last tested: --");
         }
 
         // LibreSpeed may provide nanosecond precision. Trim it to
@@ -1082,7 +1082,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         const date = new Date(parseableTimestamp);
 
         if (Number.isNaN(date.getTime())) {
-            return "Last tested: --";
+            return _("Last tested: --");
         }
 
         let hours = date.getHours();
@@ -1095,7 +1095,9 @@ class SpeedPupDesklet extends Desklet.Desklet {
             hours = 12;
         }
 
-        return `Last tested: ${hours}:${minutes} ${suffix}`;
+        return _("Last tested: %s").format(
+            `${hours}:${minutes} ${suffix}`
+        );
     }
 
     _setTestingState(testing) {
