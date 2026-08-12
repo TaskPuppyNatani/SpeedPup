@@ -386,7 +386,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
                     if (!success) {
                         this._showNetworkError(
-                            "Unable to read network statistics"
+                            _("Unable to read network statistics")
                         );
                         return;
                     }
@@ -400,7 +400,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
                     if (totals === null) {
                         this._showNetworkError(
-                            "No matching network interface"
+                            _("No matching network interface")
                         );
                         return;
                     }
@@ -415,7 +415,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
                     );
 
                     this._showNetworkError(
-                        "Network monitor error"
+                        _("Network monitor error")
                     );
                 }
             }
@@ -889,7 +889,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
                             );
 
                             this._showSpeedTestError(
-                                "Speed test failed"
+                                _("Speed test failed")
                             );
 
                             return;
@@ -904,7 +904,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
                         );
 
                         this._showSpeedTestError(
-                            "Unable to read speed test result"
+                            _("Unable to read speed test result")
                         );
                     } finally {
                         this._speedTestProcess = null;
@@ -921,7 +921,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
             this._setTestingState(false);
 
             this._showSpeedTestError(
-                "Unable to start speed test"
+                _("Unable to start speed test")
             );
         }
     }
@@ -1105,47 +1105,47 @@ class SpeedPupDesklet extends Desklet.Desklet {
 
         if (testing) {
             this._speedTestButtonLabel.set_text(
-                "Testing connection..."
+                _("Testing connection...")
             );
 
             this._testDownloadLabel.set_text(
-                "↓ Download: testing..."
+                _("↓ Download: testing...")
             );
 
             this._testUploadLabel.set_text(
-                "↑ Upload: waiting..."
+                _("↑ Upload: waiting...")
             );
 
             this._pingLabel.set_text(
-                "Ping: measuring..."
+                _("Ping: measuring...")
             );
         } else {
             this._speedTestButtonLabel.set_text(
-                "▶ Run Speed Test"
+                _("▶ Run Speed Test")
             );
         }
     }
 
     _showMissingSpeedTest() {
         this._testDownloadLabel.set_text(
-            "librespeed-cli is not installed"
+            _("librespeed-cli is not installed")
         );
 
         this._testUploadLabel.set_text(
-            "Install package: librespeed-cli"
+            _("Install package: librespeed-cli")
         );
 
         this._pingLabel.set_text(
-            "Then try again"
+            _("Then try again")
         );
     }
 
     _showSpeedTestError(message) {
         this._testDownloadLabel.set_text(message);
         this._testUploadLabel.set_text(
-            "Check Cinnamon logs for details"
+            _("Check Cinnamon logs for details")
         );
-        this._pingLabel.set_text("Ping: --");
+        this._pingLabel.set_text(_("Ping: --"));
     }
 
     _showNetworkError(message) {
@@ -1154,11 +1154,11 @@ class SpeedPupDesklet extends Desklet.Desklet {
         }
 
         this._downloadLabel.set_text(
-            `↓ Download: ${message}`
+            _("↓ Download: %s").format(message)
         );
 
         this._uploadLabel.set_text(
-            "↑ Upload: unavailable"
+            _("↑ Upload: unavailable")
         );
     }
 
