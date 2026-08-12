@@ -25,6 +25,8 @@ class SpeedPupDesklet extends Desklet.Desklet {
     constructor(metadata, deskletId) {
         super(metadata, deskletId);
 
+        this._deskletPath = metadata.path;
+
         this.speedTestServer = "91";
 
         this.networkInterfaceMode = "auto";
@@ -184,6 +186,37 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._graphLegend.add_child(this._graphLegendUpload);
         this._graphLegend.add_child(this._graphLegendRange);
 
+        const logoFile = Gio.file_new_for_path(
+            GLib.build_filenamev([
+                this._deskletPath,
+                "rivet-pixel-logo.png"
+            ])
+        );
+
+        this._brandLogo = new St.Icon({
+            gicon: new Gio.FileIcon({ file: logoFile }),
+            icon_size: 78,
+            style_class: "speedpup-brand-logo"
+        });
+
+        this._liveInfoBox = new St.BoxLayout({
+            vertical: true,
+            x_expand: true
+        });
+
+        this._liveInfoBox.add_child(this._liveSection);
+        this._liveInfoBox.add_child(this._downloadLabel);
+        this._liveInfoBox.add_child(this._uploadLabel);
+        this._liveInfoBox.add_child(this._graphLegend);
+
+        this._liveTopRow = new St.BoxLayout({
+            vertical: false,
+            style_class: "speedpup-live-top-row"
+        });
+
+        this._liveTopRow.add_child(this._liveInfoBox);
+        this._liveTopRow.add_child(this._brandLogo);
+
         this._networkGraph = new St.DrawingArea({
             style_class: "speedpup-network-graph"
         });
@@ -277,10 +310,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         );
 
         this._container.add_child(this._title);
-        this._container.add_child(this._liveSection);
-        this._container.add_child(this._downloadLabel);
-        this._container.add_child(this._uploadLabel);
-        this._container.add_child(this._graphLegend);
+        this._container.add_child(this._liveTopRow);
         this._container.add_child(this._networkGraph);
 
         this._container.add_child(this._testSection);

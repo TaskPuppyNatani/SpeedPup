@@ -146,3 +146,27 @@
     font-size: 11px;
     color: #9999a3;
 }
+
+.speedpup-brand-logo {
+    margin-top: 8px;
+}
+
+.speedpup-live-header {
+    spacing: 18px;
+}
+
+.speedpup-live-info {
+    spacing: 7px;
+}
+
+.speedpup-live-header .speedpup-brand-logo {
+    margin: 4px 10px 0 14px;
+}
+
+.speedpup-live-top-row {
+    spacing: 18px;
+}
+
+.speedpup-live-top-row .speedpup-brand-logo {
+    margin: 6px 10px 0 12px;
+}
