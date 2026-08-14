@@ -9,6 +9,7 @@ SpeedPup is a Cinnamon desklet for monitoring live network traffic and running o
 - Automatic active-interface detection
 - Manual Ethernet and Wi-Fi interface selection
 - Configurable graph history and height
+- Adjustable desklet size
 - On-demand internet speed tests
 - Download, upload, and ping results
 - Speed-test server selection

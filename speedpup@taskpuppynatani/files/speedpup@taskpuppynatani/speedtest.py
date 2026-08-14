@@ -480,7 +480,7 @@ def main():
     )
 
     # Accepted for compatibility with the previous
-    # previous command-line interface. Output is always JSON.
+    # command-line interface. Output is always JSON.
     parser.add_argument(
         "--json",
         action="store_true",
