@@ -24,9 +24,9 @@
   "speed-test-server": {
     "type": "combobox",
     "default": "auto",
-    "description": "Speed test server",
+    "description": "Speed test server — Auto selects the best available server worldwide.",
     "options": {
-      "Auto": "auto",
+      "Auto (Worldwide)": "auto",
       "Los Angeles - Sharktech": "91",
       "Los Angeles - Clouvider": "54",
       "Las Vegas - Sharktech": "90",
