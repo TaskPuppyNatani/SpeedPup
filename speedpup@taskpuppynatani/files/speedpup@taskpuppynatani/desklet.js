@@ -837,18 +837,27 @@ class SpeedPupDesklet extends Desklet.Desklet {
             return;
         }
 
-        const executable = GLib.find_program_in_path("librespeed-cli");
+        const python =
+            GLib.find_program_in_path("python3");
 
-        if (!executable) {
-            this._showMissingSpeedTest();
+        if (!python) {
+            this._showSpeedTestError(
+                _("Python 3 is not available")
+            );
             return;
         }
+
+        const helper = GLib.build_filenamev([
+            this._deskletPath,
+            "speedtest.py"
+        ]);
 
         this._setTestingState(true);
 
         try {
             const args = [
-                executable,
+                python,
+                helper,
                 "--json"
             ];
 
@@ -881,9 +890,14 @@ class SpeedPupDesklet extends Desklet.Desklet {
                             success,
                             stdout,
                             stderr
-                        ] = process.communicate_utf8_finish(result);
+                        ] = process.communicate_utf8_finish(
+                            result
+                        );
 
-                        if (!success || process.get_exit_status() !== 0) {
+                        if (
+                            !success ||
+                            process.get_exit_status() !== 0
+                        ) {
                             global.log(
                                 `SpeedPup speed test error: ${stderr}`
                             );
@@ -895,9 +909,13 @@ class SpeedPupDesklet extends Desklet.Desklet {
                             return;
                         }
 
-                        const data = JSON.parse(stdout);
+                        const data = JSON.parse(
+                            stdout.trim()
+                        );
 
-                        this._displaySpeedTestResults(data);
+                        this._displaySpeedTestResults(
+                            data
+                        );
                     } catch (error) {
                         global.logError(
                             `SpeedPup speed test failed: ${error}`
@@ -1124,20 +1142,6 @@ class SpeedPupDesklet extends Desklet.Desklet {
                 _("▶ Run Speed Test")
             );
         }
-    }
-
-    _showMissingSpeedTest() {
-        this._testDownloadLabel.set_text(
-            _("librespeed-cli is not installed")
-        );
-
-        this._testUploadLabel.set_text(
-            _("Install package: librespeed-cli")
-        );
-
-        this._pingLabel.set_text(
-            _("Then try again")
-        );
     }
 
     _showSpeedTestError(message) {

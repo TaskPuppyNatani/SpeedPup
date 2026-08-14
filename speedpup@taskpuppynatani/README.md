@@ -16,9 +16,9 @@ SpeedPup is a Cinnamon desklet for monitoring live network traffic and running o
 
 ## Speed testing
 
-SpeedPup currently uses `librespeed-cli` for internet speed tests.
+SpeedPup includes a self-contained Python speed-test helper that uses the LibreSpeed server network.
 
-Distribution compatibility for this dependency is still being finalized before submission to Cinnamon Spices.
+No additional speed-test package is required.
 
 ## License
 

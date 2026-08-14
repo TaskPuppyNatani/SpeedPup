@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-12 12:23-0700\n"
+"POT-Creation-Date: 2026-08-13 18:27-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "↑ Upload: --"
 msgstr ""
 
-#: desklet.js:260 desklet.js:1148
+#: desklet.js:260 desklet.js:1152
 msgid "Ping: --"
 msgstr ""
 
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Test Server"
 msgstr ""
 
-#: desklet.js:291 desklet.js:1072 desklet.js:1085
+#: desklet.js:291 desklet.js:1090 desklet.js:1103
 msgid "Last tested: --"
 msgstr ""
 
-#: desklet.js:307 desklet.js:1124
+#: desklet.js:307 desklet.js:1142
 msgid "▶ Run Speed Test"
 msgstr ""
 
@@ -83,7 +83,7 @@ msgstr ""
 msgid "Network monitor error"
 msgstr ""
 
-#: desklet.js:599 desklet.js:1157
+#: desklet.js:599 desklet.js:1161
 #, javascript-format
 msgid "↓ Download: %s"
 msgstr ""
@@ -93,71 +93,63 @@ msgstr ""
 msgid "↑ Upload: %s"
 msgstr ""
 
-#: desklet.js:892
+#: desklet.js:845
+msgid "Python 3 is not available"
+msgstr ""
+
+#: desklet.js:906
 msgid "Speed test failed"
 msgstr ""
 
-#: desklet.js:907
+#: desklet.js:925
 msgid "Unable to read speed test result"
 msgstr ""
 
-#: desklet.js:924
+#: desklet.js:942
 msgid "Unable to start speed test"
 msgstr ""
 
-#: desklet.js:949
+#: desklet.js:967
 #, javascript-format
 msgid "↓ Download: %s Mbps"
 msgstr ""
 
-#: desklet.js:955
+#: desklet.js:973
 #, javascript-format
 msgid "↑ Upload: %s Mbps"
 msgstr ""
 
-#: desklet.js:961
+#: desklet.js:979
 #, javascript-format
 msgid "Ping: %s ms"
 msgstr ""
 
-#: desklet.js:1098
+#: desklet.js:1116
 #, javascript-format
 msgid "Last tested: %s"
 msgstr ""
 
-#: desklet.js:1108
+#: desklet.js:1126
 msgid "Testing connection..."
 msgstr ""
 
-#: desklet.js:1112
+#: desklet.js:1130
 msgid "↓ Download: testing..."
 msgstr ""
 
-#: desklet.js:1116
+#: desklet.js:1134
 msgid "↑ Upload: waiting..."
 msgstr ""
 
-#: desklet.js:1120
+#: desklet.js:1138
 msgid "Ping: measuring..."
 msgstr ""
 
-#: desklet.js:1131
-msgid "librespeed-cli is not installed"
-msgstr ""
-
-#: desklet.js:1135
-msgid "Install package: librespeed-cli"
-msgstr ""
-
-#: desklet.js:1139
-msgid "Then try again"
-msgstr ""
-
-#: desklet.js:1146
+#: desklet.js:1150
 msgid "Check Cinnamon logs for details"
 msgstr ""
 
-#: desklet.js:1161
+#: desklet.js:1165
 msgid "↑ Upload: unavailable"
 msgstr ""
 
