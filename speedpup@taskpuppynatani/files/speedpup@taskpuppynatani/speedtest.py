@@ -177,8 +177,7 @@ def select_server(servers, server_id=None):
             % server_id
         )
 
-    best_server = None
-    best_ping = None
+    candidates = []
 
     def probe(server):
         return server, ping_server(
@@ -202,23 +201,22 @@ def select_server(servers, server_id=None):
             except Exception:
                 continue
 
-            if (
-                best_ping is None
-                or ping < best_ping
-            ):
-                best_server = server
-                best_ping = ping
+            candidates.append((ping, server))
 
-    if best_server is None:
-        raise RuntimeError(
-            "No LibreSpeed server is currently available"
-        )
+    candidates.sort(
+        key=lambda item: item[0]
+    )
 
-    # Measure the chosen server more accurately for
-    # the value displayed to the user.
-    return (
-        best_server,
-        ping_server(best_server)
+    for _probe_ping, server in candidates:
+        try:
+            ping = ping_server(server)
+        except Exception:
+            continue
+
+        return server, ping
+
+    raise RuntimeError(
+        "No speed test server is currently available"
     )
 
 
