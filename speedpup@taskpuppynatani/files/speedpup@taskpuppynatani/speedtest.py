@@ -104,7 +104,7 @@ def fetch_servers():
 
     if not isinstance(servers, list):
         raise RuntimeError(
-            "LibreSpeed server list is invalid"
+            "Speed test server list is invalid"
         )
 
     return servers
@@ -173,7 +173,7 @@ def select_server(servers, server_id=None):
                 return server, ping
 
         raise RuntimeError(
-            "LibreSpeed server %d was not found"
+            "Speed test server %d was not found"
             % server_id
         )
 
@@ -467,7 +467,7 @@ def run(server_id=None):
 def main():
     parser = argparse.ArgumentParser(
         description=(
-            "SpeedPup LibreSpeed-compatible "
+            "SpeedPup self-contained "
             "speed test helper"
         )
     )
@@ -476,7 +476,7 @@ def main():
         "--server",
         type=int,
         default=None,
-        help="LibreSpeed server ID"
+        help="Speed test server ID"
     )
 
     # Accepted for compatibility with the previous

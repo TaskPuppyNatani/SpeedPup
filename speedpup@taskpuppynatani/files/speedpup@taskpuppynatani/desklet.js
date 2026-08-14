@@ -948,7 +948,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         const result = Array.isArray(data) ? data[0] : data;
 
         if (!result) {
-            throw new Error("LibreSpeed returned no results");
+            throw new Error("Speed test returned no results");
         }
 
         const downloadMbps = Number(result.download);
@@ -960,7 +960,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
             !Number.isFinite(uploadMbps) ||
             !Number.isFinite(pingMs)
         ) {
-            throw new Error("LibreSpeed returned invalid result values");
+            throw new Error("Speed test returned invalid result values");
         }
 
         this._testDownloadLabel.set_text(
@@ -1090,7 +1090,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
             return _("Last tested: --");
         }
 
-        // LibreSpeed may provide nanosecond precision. Trim it to
+        // The speed-test helper may provide nanosecond precision. Trim it to
         // milliseconds so JavaScript Date parsing stays predictable.
         const parseableTimestamp = timestamp.replace(
             /(\.\d{3})\d+([+-]\d{2}:\d{2}|Z)$/,
