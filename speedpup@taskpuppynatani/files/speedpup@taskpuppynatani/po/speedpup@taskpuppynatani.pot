@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-13 19:23-0700\n"
+"POT-Creation-Date: 2026-08-13 21:07-0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,139 +17,139 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: desklet.js:163
+#: desklet.js:320
 msgid "Live Network Traffic"
 msgstr ""
 
-#: desklet.js:168 desklet.js:545
+#: desklet.js:325 desklet.js:702
 msgid "↓ Download: measuring..."
 msgstr ""
 
-#: desklet.js:173 desklet.js:551
+#: desklet.js:330 desklet.js:708
 msgid "↑ Upload: measuring..."
 msgstr ""
 
-#: desklet.js:183
+#: desklet.js:340
 msgid "↓ Download"
 msgstr ""
 
-#: desklet.js:188
+#: desklet.js:345
 msgid "↑ Upload"
 msgstr ""
 
-#: desklet.js:193 desklet.js:679
+#: desklet.js:350 desklet.js:838
 #, javascript-format
 msgid "• Last %d seconds"
 msgstr ""
 
 #. settings-schema.json->speed-test-header->description
-#: desklet.js:245
+#: desklet.js:402
 msgid "Internet Speed Test"
 msgstr ""
 
-#: desklet.js:250
+#: desklet.js:407
 msgid "↓ Download: --"
 msgstr ""
 
-#: desklet.js:255
+#: desklet.js:412
 msgid "↑ Upload: --"
 msgstr ""
 
-#: desklet.js:260 desklet.js:1152
+#: desklet.js:417 desklet.js:1311
 msgid "Ping: --"
 msgstr ""
 
-#: desklet.js:281
+#: desklet.js:438
 msgid "Test Server"
 msgstr ""
 
-#: desklet.js:291 desklet.js:1090 desklet.js:1103
+#: desklet.js:448 desklet.js:1249 desklet.js:1262
 msgid "Last tested: --"
 msgstr ""
 
-#: desklet.js:307 desklet.js:1142
+#: desklet.js:464 desklet.js:1301
 msgid "▶ Run Speed Test"
 msgstr ""
 
-#: desklet.js:389
+#: desklet.js:546
 msgid "Unable to read network statistics"
 msgstr ""
 
-#: desklet.js:403
+#: desklet.js:560
 msgid "No matching network interface"
 msgstr ""
 
-#: desklet.js:418
+#: desklet.js:575
 msgid "Network monitor error"
 msgstr ""
 
-#: desklet.js:599 desklet.js:1161
+#: desklet.js:756 desklet.js:1320
 #, javascript-format
 msgid "↓ Download: %s"
 msgstr ""
 
-#: desklet.js:605
+#: desklet.js:762
 #, javascript-format
 msgid "↑ Upload: %s"
 msgstr ""
 
-#: desklet.js:845
+#: desklet.js:1004
 msgid "Python 3 is not available"
 msgstr ""
 
-#: desklet.js:906
+#: desklet.js:1065
 msgid "Speed test failed"
 msgstr ""
 
-#: desklet.js:925
+#: desklet.js:1084
 msgid "Unable to read speed test result"
 msgstr ""
 
-#: desklet.js:942
+#: desklet.js:1101
 msgid "Unable to start speed test"
 msgstr ""
 
-#: desklet.js:967
+#: desklet.js:1126
 #, javascript-format
 msgid "↓ Download: %s Mbps"
 msgstr ""
 
-#: desklet.js:973
+#: desklet.js:1132
 #, javascript-format
 msgid "↑ Upload: %s Mbps"
 msgstr ""
 
-#: desklet.js:979
+#: desklet.js:1138
 #, javascript-format
 msgid "Ping: %s ms"
 msgstr ""
 
-#: desklet.js:1116
+#: desklet.js:1275
 #, javascript-format
 msgid "Last tested: %s"
 msgstr ""
 
-#: desklet.js:1126
+#: desklet.js:1285
 msgid "Testing connection..."
 msgstr ""
 
-#: desklet.js:1130
+#: desklet.js:1289
 msgid "↓ Download: testing..."
 msgstr ""
 
-#: desklet.js:1134
+#: desklet.js:1293
 msgid "↑ Upload: waiting..."
 msgstr ""
 
-#: desklet.js:1138
+#: desklet.js:1297
 msgid "Ping: measuring..."
 msgstr ""
 
-#: desklet.js:1150
+#: desklet.js:1309
 msgid "Check Cinnamon logs for details"
 msgstr ""
 
-#: desklet.js:1165
+#: desklet.js:1324
 msgid "↑ Upload: unavailable"
 msgstr ""
 
@@ -197,6 +197,14 @@ msgstr ""
 msgid ""
 "SpeedPup by TaskPuppyKreations: monitor live network activity and run on-"
 "demand internet speed tests."
+msgstr ""
+
+#. settings-schema.json->appearance-header->description
+msgid "Appearance"
+msgstr ""
+
+#. settings-schema.json->desklet-scale->description
+msgid "Desklet size"
 msgstr ""
 
 #. settings-schema.json->network-header->description

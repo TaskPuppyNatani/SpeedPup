@@ -39,6 +39,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._deskletPath = metadata.path;
 
         this.speedTestServer = "auto";
+        this.deskletScale = 0.85;
 
         this.networkInterfaceMode = "auto";
         this.customNetworkInterface = "";
@@ -51,6 +52,14 @@ class SpeedPupDesklet extends Desklet.Desklet {
             this,
             metadata.uuid,
             deskletId
+        );
+
+        this.settings.bindProperty(
+            Settings.BindingDirection.IN,
+            "desklet-scale",
+            "deskletScale",
+            this._onDeskletScaleChanged.bind(this),
+            null
         );
 
         this.settings.bind(
@@ -134,6 +143,7 @@ class SpeedPupDesklet extends Desklet.Desklet {
         );
 
         this._buildUi();
+        this._applyDeskletScale();
         this._applyGraphSettings();
         this._loadLastSpeedTest();
         this._readNetworkStats();
@@ -146,6 +156,153 @@ class SpeedPupDesklet extends Desklet.Desklet {
                 return GLib.SOURCE_CONTINUE;
             }
         );
+    }
+
+    _getDeskletScale() {
+        const value = Number(this.deskletScale);
+
+        if (!Number.isFinite(value)) {
+            return 0.85;
+        }
+
+        return Math.max(
+            0.5,
+            Math.min(1.5, value)
+        );
+    }
+
+    _onDeskletScaleChanged() {
+        this._applyDeskletScale();
+    }
+
+    _applyDeskletScale() {
+        if (!this._container) {
+            return;
+        }
+
+        const scale = this._getDeskletScale();
+        const px = value =>
+            Math.max(1, Math.round(value * scale));
+
+        // Never transform the desklet actor itself. Cinnamon uses the
+        // actor allocation for its selection/grab box, so transforming
+        // it would make the visible desklet and selection box disagree.
+        this.actor.set_scale(1, 1);
+
+        this._container.set_style(
+            `padding: ${px(18)}px; ` +
+            `min-width: ${px(300)}px; ` +
+            `spacing: ${px(7)}px; ` +
+            `border-radius: ${px(12)}px;`
+        );
+
+        this._title.set_style(
+            `font-size: ${px(18)}px;`
+        );
+
+        this._liveSection.set_style(
+            `padding-top: ${px(6)}px; ` +
+            `font-size: ${px(12)}px;`
+        );
+
+        this._testSection.set_style(
+            `padding-top: ${px(12)}px; ` +
+            `font-size: ${px(12)}px;`
+        );
+
+        this._downloadLabel.set_style(
+            `font-size: ${px(16)}px;`
+        );
+
+        this._uploadLabel.set_style(
+            `font-size: ${px(16)}px;`
+        );
+
+        this._testDownloadLabel.set_style(
+            `font-size: ${px(15)}px;`
+        );
+
+        this._testUploadLabel.set_style(
+            `font-size: ${px(15)}px;`
+        );
+
+        this._pingLabel.set_style(
+            `font-size: ${px(15)}px;`
+        );
+
+        this._graphLegend.set_style(
+            `padding-top: ${px(5)}px; ` +
+            `spacing: ${px(18)}px;`
+        );
+
+        this._graphLegendDownload.set_style(
+            `font-size: ${px(11)}px;`
+        );
+
+        this._graphLegendUpload.set_style(
+            `font-size: ${px(11)}px;`
+        );
+
+        this._graphLegendRange.set_style(
+            `font-size: ${px(11)}px;`
+        );
+
+        this._liveTopRow.set_style(
+            `spacing: ${px(18)}px;`
+        );
+
+        this._brandLogo.icon_size = px(78);
+        this._brandLogo.set_style(
+            `margin: ${px(6)}px ${px(10)}px 0 ${px(12)}px;`
+        );
+
+        this._testResultsBox.set_style(
+            `spacing: ${px(30)}px;`
+        );
+
+        this._testNumbersBox.set_style(
+            `spacing: ${px(4)}px;`
+        );
+
+        this._serverBox.set_style(
+            `spacing: ${px(4)}px; ` +
+            `min-width: ${px(130)}px;`
+        );
+
+        this._serverHeading.set_style(
+            `font-size: ${px(12)}px;`
+        );
+
+        this._serverLabel.set_style(
+            `font-size: ${px(13)}px;`
+        );
+
+        this._lastTestedLabel.set_style(
+            `padding-top: ${px(3)}px; ` +
+            `font-size: ${px(11)}px;`
+        );
+
+        this._speedTestButton.set_style(
+            `margin-top: ${px(10)}px; ` +
+            `padding: ${px(9)}px ${px(14)}px; ` +
+            `border-radius: ${px(8)}px;`
+        );
+
+        this._networkGraph.width =
+            Math.round(GRAPH_WIDTH * scale);
+
+        this._networkGraph.height =
+            Math.round(
+                this._getGraphHeight() * scale
+            );
+
+        this._networkGraph.set_style(
+            `margin-top: ${px(2)}px; ` +
+            `margin-bottom: ${px(6)}px; ` +
+            `border-radius: ${px(6)}px;`
+        );
+
+        this._networkGraph.queue_repaint();
     }
 
     _buildUi() {
@@ -673,7 +830,9 @@ class SpeedPupDesklet extends Desklet.Desklet {
         this._networkGraph.visible = visible;
         this._graphLegend.visible = visible;
 
-        this._networkGraph.height = graphHeight;
+        this._networkGraph.height = Math.round(
+            graphHeight * this._getDeskletScale()
+        );
 
         this._graphLegendRange.set_text(
             _("• Last %d seconds").format(historySeconds)
